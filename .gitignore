@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editor / assistant tooling (local-only, not part of the app)
+.claude/
+.vscode/
+.idea/

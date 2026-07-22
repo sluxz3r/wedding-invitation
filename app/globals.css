@@ -1,26 +1,191 @@
 @import "tailwindcss";
 
+@custom-variant pointer-fine (@media (pointer: fine) and (hover: hover));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* backgrounds */
+  --color-ink: #0a0908;
+  --color-ink-alt: #17130f;
+
+  /* foreground / text */
+  --color-paper: #f7f5f1;
+  --color-paper-dim: #a8a29b;
+
+  /* accent */
+  --color-gold: #c9a227;
+  --color-gold-light: #efdba0;
+
+  /* semantic: form validation errors only — never used as brand/accent */
+  --color-error: #e4685c;
+
+  --color-border: #c9a227;
+
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-inter);
+  --font-mono-wide: var(--font-space-mono);
+
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--color-ink);
+  --color-ink-alt: var(--color-ink-alt);
+  --color-paper: var(--color-paper);
+  --color-paper-dim: var(--color-paper-dim);
+  --color-gold: var(--color-gold);
+  --color-gold-light: var(--color-gold-light);
+  --color-error: var(--color-error);
+  --color-border: var(--color-border);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono-wide: var(--font-mono-wide);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body), sans-serif;
+  position: relative;
+}
+
+/* fine metallic grain, purely decorative — visible against dark surfaces */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* focus ring: consistent, visible, never suppressed */
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* custom cursor: only ever enabled by JS adding this class, and only on
+   fine-pointer devices; default cursor is always present otherwise */
+html.custom-cursor-active {
+  cursor: none;
+}
+html.custom-cursor-active a,
+html.custom-cursor-active button {
+  cursor: none;
+}
+
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 22s linear infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.gold-shimmer {
+  animation: shimmer 3.5s ease-in-out infinite;
+}
+
+@keyframes shine-sweep {
+  to {
+    background-position: -200% center;
+  }
+}
+
+/* a moving light-catch sweep across gold text — a signature accent, used
+   sparingly (not on body copy) */
+.shine-sweep {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-gold-light) 30%,
+    #fff8e6 50%,
+    var(--color-gold-light) 70%
+  );
+  background-size: 250% auto;
+  background-position: 200% center;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shine-sweep 4s linear infinite;
+}
+
+/* large outlined section-number watermark — editorial touch, purely
+   decorative background */
+.ghost-number {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(201, 162, 39, 0.18);
+}
+
+/* cursor-follow spotlight glow — desktop hover only, no equivalent on touch */
+.spotlight {
+  position: relative;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    220px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(201, 162, 39, 0.18),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+@media (pointer: fine) and (hover: hover) {
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track {
+    animation-play-state: paused;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
