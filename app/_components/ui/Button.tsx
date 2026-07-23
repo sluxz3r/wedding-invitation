@@ -55,7 +55,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         <m.a
           ref={mergeRefs(forwardedRef, magnetic.ref)}
           href={href}
-          data-cursor="Klik"
+          data-cursor="Click"
           className={classes}
           style={magnetic.style}
           onMouseMove={magnetic.onMouseMove}
@@ -76,7 +76,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     return (
       <m.button
         ref={mergeRefs(forwardedRef, magnetic.ref)}
-        data-cursor="Klik"
+        data-cursor="Click"
         className={classes}
         style={magnetic.style}
         onMouseMove={magnetic.onMouseMove}

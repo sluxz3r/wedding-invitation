@@ -32,7 +32,7 @@ const spaceMono = Space_Mono({
 });
 
 const title = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
-const description = `Dengan penuh syukur, kami mengundang Anda ke pernikahan kami — ${weddingDateDisplay}.`;
+const description = `With gratitude, we invite you to celebrate our wedding — ${weddingDateDisplay}.`;
 
 export const metadata: Metadata = {
   // TODO: once deployed, set this to the real domain so social crawlers can
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     title,
     description,
     type: "website",
-    locale: "id_ID",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
@@ -60,7 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="id"
+      lang="en"
       className={`${playfair.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-hidden">

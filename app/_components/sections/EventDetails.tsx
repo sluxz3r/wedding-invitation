@@ -22,17 +22,17 @@ export function EventDetails() {
   // Same location, one occasion — a single combined calendar entry rather
   // than one per card.
   const calendarUrl = googleCalendarUrl({
-    title: `Akad & Resepsi — ${title}`,
-    description: `Akad Nikah pukul ${akad.time}, dilanjutkan Resepsi pukul ${resepsi.time}.`,
+    title: `Ceremony & Reception — ${title}`,
+    description: `Marriage ceremony at ${akad.time}, followed by the reception at ${resepsi.time}.`,
     location: akad.address,
     startISO: akad.dateTimeISO,
     endISO: resepsi.endTimeISO,
   });
 
   return (
-    <SectionShell id="details" index="01" eyebrow="Acara" alt>
+    <SectionShell id="details" index="01" eyebrow="Events" alt>
       <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
-        Dua rangkaian acara, satu hari penuh berkah.
+        Two ceremonies, one blessed day.
       </RevealHeading>
       <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2">
         {events.map((event, i) => (
@@ -65,10 +65,10 @@ export function EventDetails() {
 
       <div className="mt-10 flex flex-wrap gap-3">
         <Button variant="outline" href={calendarUrl} target="_blank" rel="noopener noreferrer">
-          Tambah ke Kalender
+          Add to Calendar
         </Button>
         <Button variant="outline" href={venueMapUrl} target="_blank" rel="noopener noreferrer">
-          Lihat Lokasi di Google Maps
+          View Location on Google Maps
         </Button>
       </div>
     </SectionShell>

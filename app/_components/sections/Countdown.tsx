@@ -70,19 +70,19 @@ export function Countdown() {
   // when the coarse day/hour figures do, even though it recomputes every second.
   const announced = remaining
     ? remaining.done
-      ? "Hari yang dinanti telah tiba."
-      : `${remaining.days} hari ${remaining.hours} jam lagi.`
+      ? "The day we've waited for is here."
+      : `${remaining.days} days and ${remaining.hours} hours to go.`
     : "";
 
   const units = [
-    { label: "Hari", value: display.days },
-    { label: "Jam", value: display.hours },
-    { label: "Menit", value: display.minutes },
-    { label: "Detik", value: display.seconds },
+    { label: "Days", value: display.days },
+    { label: "Hours", value: display.hours },
+    { label: "Minutes", value: display.minutes },
+    { label: "Seconds", value: display.seconds },
   ];
 
   return (
-    <SectionShell id="countdown" index="02" eyebrow="Hitung Mundur">
+    <SectionShell id="countdown" index="02" eyebrow="Countdown">
       <m.div
         aria-hidden="true"
         initial="hidden"

@@ -6,9 +6,9 @@ import { couple } from "@/app/data/content";
 import { cn } from "@/app/_lib/cn";
 
 const links = [
-  { href: "#details", label: "Acara" },
-  { href: "#ucapan", label: "Ucapan" },
-  { href: "#registry", label: "Hadiah" },
+  { href: "#details", label: "Events" },
+  { href: "#ucapan", label: "Wishes" },
+  { href: "#registry", label: "Gifts" },
 ];
 
 const underline =
@@ -43,15 +43,16 @@ export function Nav() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:px-10 lg:px-16">
         <a
           href="#top"
-          data-cursor="Atas"
+          data-cursor="Top"
+          aria-label={`${couple.partnerOne} & ${couple.partnerTwo} — back to top`}
           className="font-display text-lg italic tracking-tight text-gold-light"
         >
-          {couple.partnerOne[0]}
-          <span aria-hidden="true">&</span>
-          {couple.partnerTwo[0]}
+          <span aria-hidden="true">
+            {couple.partnerOne} &amp; {couple.partnerTwo}
+          </span>
         </a>
 
-        <nav aria-label="Navigasi bagian" className="hidden md:block">
+        <nav aria-label="Section navigation" className="hidden md:block">
           <ul className="flex items-center gap-8 font-mono-wide text-xs uppercase tracking-[0.2em] text-paper">
             {links.map((link) => {
               const active = activeHref === link.href;
@@ -60,7 +61,7 @@ export function Nav() {
                   <a
                     href={link.href}
                     aria-current={active ? "true" : undefined}
-                    data-cursor="Lihat"
+                    data-cursor="View"
                     className={cn(
                       "cursor-pointer",
                       underline,
@@ -82,7 +83,7 @@ export function Nav() {
           className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center md:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
-          aria-label={open ? "Tutup menu" : "Buka menu"}
+          aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((value) => !value)}
         >
           <span className="relative block h-4 w-6">
@@ -100,7 +101,7 @@ export function Nav() {
         {open ? (
           <m.nav
             id="mobile-nav"
-            aria-label="Navigasi bagian"
+            aria-label="Section navigation"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

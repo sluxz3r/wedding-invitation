@@ -30,8 +30,8 @@ export function Ucapan() {
 
   function validate(): FieldErrors {
     const next: FieldErrors = {};
-    if (!values.name.trim()) next.name = "Mohon isi nama Anda.";
-    if (!values.message.trim()) next.message = "Mohon isi ucapan atau doa Anda.";
+    if (!values.name.trim()) next.name = "Please enter your name.";
+    if (!values.message.trim()) next.message = "Please write your wishes or prayer.";
     return next;
   }
 
@@ -56,22 +56,29 @@ export function Ucapan() {
         body: JSON.stringify(values),
       });
 
-      if (!response.ok) throw new Error("Request failed");
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as { error?: string } | null;
+        setStatus("error");
+        setStatusMessage(
+          data?.error ?? "Something went wrong. Please try again in a moment.",
+        );
+        return;
+      }
 
       setStatus("success");
-      setStatusMessage("Terima kasih atas ucapan dan doanya — sangat berarti bagi kami.");
+      setStatusMessage("Thank you for your wishes and prayers — they mean the world to us.");
       setValues(initialState);
       window.setTimeout(() => {
         setStatus((current) => (current === "success" ? "idle" : current));
       }, 2500);
     } catch {
       setStatus("error");
-      setStatusMessage("Terjadi kesalahan saat mengirim. Silakan coba lagi sesaat lagi.");
+      setStatusMessage("Something went wrong. Please try again in a moment.");
     }
   }
 
   return (
-    <SectionShell id="ucapan" index="03" eyebrow="Ucapan & Doa" alt>
+    <SectionShell id="ucapan" index="03" eyebrow="Wishes & Prayers" alt>
       <m.div
         initial="hidden"
         whileInView="visible"
@@ -79,7 +86,7 @@ export function Ucapan() {
         variants={fadeUp}
       >
         <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
-          Titipkan doa terbaik untuk kami.
+          Leave us your warmest wishes.
         </RevealHeading>
 
         <form noValidate onSubmit={handleSubmit} className="mt-10 flex max-w-xl flex-col gap-8">
@@ -99,7 +106,7 @@ export function Ucapan() {
               className="peer min-h-11 w-full border border-gold/30 bg-ink px-4 py-3 font-body text-paper outline-none focus-visible:border-gold-light"
             />
             <label htmlFor="ucapan-name" className={floatingLabel}>
-              Nama <span aria-hidden="true">*</span>
+              Name <span aria-hidden="true">*</span>
             </label>
             {errors.name ? (
               <p id="ucapan-name-error" className="mt-2 font-mono-wide text-xs text-error">
@@ -123,7 +130,7 @@ export function Ucapan() {
               className="peer w-full border border-gold/30 bg-ink px-4 py-3 font-body text-paper outline-none focus-visible:border-gold-light"
             />
             <label htmlFor="ucapan-message" className={floatingLabel}>
-              Ucapan &amp; Doa <span aria-hidden="true">*</span>
+              Wishes &amp; Prayers <span aria-hidden="true">*</span>
             </label>
             {errors.message ? (
               <p id="ucapan-message-error" className="mt-2 font-mono-wide text-xs text-error">
@@ -152,7 +159,7 @@ export function Ucapan() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  Terkirim
+                  Sent
                 </m.span>
               ) : (
                 <m.span
@@ -162,7 +169,7 @@ export function Ucapan() {
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {status === "loading" ? "Mengirim…" : "Kirim Ucapan"}
+                  {status === "loading" ? "Sending…" : "Send Wishes"}
                 </m.span>
               )}
             </AnimatePresence>

@@ -3,8 +3,8 @@
  * Replace the placeholder values below with the real details —
  * every section on the site reads from this file only.
  *
- * Assumes an Indonesian Muslim wedding — Akad Nikah followed by Resepsi.
- * Adjust freely if that doesn't match your family's context.
+ * Assumes an Indonesian Muslim wedding — the Marriage Ceremony (Akad Nikah)
+ * followed by the Reception. Adjust freely if that doesn't match your context.
  */
 
 export const couple = {
@@ -12,12 +12,12 @@ export const couple = {
   partnerOneFull: "Arie Azhari",
   partnerTwo: "Lily",
   partnerTwoFull: "Lily Putri Marito, S.Kep., Ns., M.Kep.",
-  hashtag: "#ArieLilyMenikah",
+  hashtag: "#ArieAndLily",
 };
 
 export const parents = {
-  groom: "Bapak (Alm.) M. Ridwan & Ibu Efrida",
-  bride: "Bapak H. Muhd. Dohir Hasibuan, S.Pd & Ibu Dra. Hj. Nurmintahari",
+  groom: "Mr. (the late) M. Ridwan & Mrs. Efrida",
+  bride: "Mr. H. Muhd. Dohir Hasibuan, S.Pd & Mrs. Dra. Hj. Nurmintahari",
 };
 
 // Cover photo shown on the welcome screen. Drop your photo in /public
@@ -28,10 +28,10 @@ export const coverPhoto = {
   alt: `${couple.partnerOneFull} & ${couple.partnerTwoFull}`,
 };
 
-// ISO 8601 — used to drive the live countdown. Keep this the Akad Nikah start time.
+// ISO 8601 — used to drive the live countdown. Keep this the ceremony start time.
 export const weddingDateISO = "2026-08-08T09:00:00";
 
-export const weddingDateDisplay = "Sabtu, 08 Agustus 2026";
+export const weddingDateDisplay = "Saturday, 8 August 2026";
 
 export type EventDetail = {
   id: string;
@@ -47,20 +47,20 @@ export type EventDetail = {
 export const events: EventDetail[] = [
   {
     id: "akad",
-    label: "Akad Nikah",
-    time: "09.00 WIB",
-    venueName: "Kediaman Keluarga Mempelai Wanita",
-    address: "Pasar Matanggor, Pintu Padang, Kec. Batang Onang, Kabupaten Padang Lawas Utara, Sumatera Utara 22762",
+    label: "Marriage Ceremony",
+    time: "09:00 AM (WIB)",
+    venueName: "Residence of the Bride's Family",
+    address: "Pasar Matanggor, Pintu Padang, Batang Onang Subdistrict, North Padang Lawas Regency, North Sumatra 22762",
     dateTimeISO: "2026-08-08T09:00:00",
     endTimeISO: "2026-08-08T10:00:00",
     note: "",
   },
   {
     id: "resepsi",
-    label: "Resepsi",
-    time: "10.30 WIB s.d. selesai",
-    venueName: "Kediaman Keluarga Mempelai Wanita",
-    address: "Pasar Matanggor, Pintu Padang, Kec. Batang Onang, Kabupaten Padang Lawas Utara, Sumatera Utara 22762",
+    label: "Reception",
+    time: "10:30 AM (WIB) onwards",
+    venueName: "Residence of the Bride's Family",
+    address: "Pasar Matanggor, Pintu Padang, Batang Onang Subdistrict, North Padang Lawas Regency, North Sumatra 22762",
     dateTimeISO: "2026-08-08T10:30:00",
     endTimeISO: "2026-08-08T13:00:00",
     note: "",
@@ -72,7 +72,7 @@ export const venueMapUrl = "https://maps.app.goo.gl/bShwDUZuXvAQ6BCw7";
 
 export type RegistryEntry = {
   id: string;
-  kind: "bank" | "wishlist";
+  kind: "bank" | "wishlist" | "link";
   title: string;
   detail: string;
   ctaLabel: string;
@@ -83,11 +83,20 @@ export const registry: RegistryEntry[] = [
   {
     id: "bank",
     kind: "bank",
-    title: "Amplop Digital",
-    detail: "Bank Mandiri — a.n. Lily Putri Marito · No. Rek. 1830005507735",
-    ctaLabel: "Salin nomor rekening",
+    title: "Digital Envelope",
+    detail: "Bank Mandiri · Lily Putri Marito · Acc. No. 1830005507735",
+    ctaLabel: "Copy account number",
     ctaHref: "1830005507735",
+  },
+  {
+    id: "sociabuzz",
+    kind: "link",
+    title: "For Our Friends Abroad",
+    detail:
+      "For our dear friends overseas — should you wish to send a token of love, SociaBuzz makes it effortless with international cards and payment methods. Thank you for your kindness.",
+    ctaLabel: "Send a gift via SociaBuzz",
+    ctaHref: "https://sociabuzz.com/arieandlily",
   },
 ];
 
-export const rsvpDeadlineDisplay = "25 Juli 2026";
+export const rsvpDeadlineDisplay = "25 July 2026";

@@ -16,6 +16,15 @@ const charVariant = {
   visible: { y: "0%", transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
+const lineageVariant = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const, delay: 0.5 },
+  },
+};
+
 function KineticWord({ word }: { word: string }) {
   return (
     <span className="inline-flex">
@@ -46,33 +55,62 @@ export function Hero() {
           animate={isOpen ? "hidden" : "visible"}
           variants={nameContainer}
           aria-label={`${couple.partnerOne} & ${couple.partnerTwo}`}
-          className="font-display text-[16vw] font-medium leading-[0.85] tracking-tight sm:text-[11vw] lg:text-[7.2vw]"
+          className="font-display font-medium tracking-tight"
         >
           <span aria-hidden="true">
-            <KineticWord word={couple.partnerOne} />
-            <span className="shine-sweep block text-[6vw] italic leading-[1.4] sm:text-[4vw] lg:text-[2.8vw]">
+            {/* Groom + his parents */}
+            <span className="block text-[16vw] leading-[0.85] sm:text-[11vw] lg:text-[7.2vw]">
+              <KineticWord word={couple.partnerOne} />
+            </span>
+            <m.span
+              variants={lineageVariant}
+              className="mt-3 block max-w-md font-body text-sm font-normal leading-relaxed text-paper-dim sm:text-base"
+            >
+              <span className="font-mono-wide text-[11px] uppercase tracking-[0.25em] text-gold-light/80">
+                Son of
+              </span>
+              <br />
+              {parents.groom}
+            </m.span>
+
+            <span className="shine-sweep my-5 block text-[6vw] italic leading-[1] sm:text-[4vw] lg:text-[2.8vw]">
               &amp;
             </span>
-            <KineticWord word={couple.partnerTwo} />
+
+            {/* Bride + her parents */}
+            <span className="block text-[16vw] leading-[0.85] sm:text-[11vw] lg:text-[7.2vw]">
+              <KineticWord word={couple.partnerTwo} />
+            </span>
+            <m.span
+              variants={lineageVariant}
+              className="mt-3 block max-w-md font-body text-sm font-normal leading-relaxed text-paper-dim sm:text-base"
+            >
+              <span className="font-mono-wide text-[11px] uppercase tracking-[0.25em] text-gold-light/80">
+                Daughter of
+              </span>
+              <br />
+              {parents.bride}
+            </m.span>
           </span>
         </m.h1>
 
-        <Rule className="mt-6 max-w-40" />
+        {/* Versi visual di atas aria-hidden — teks ini yang dibacakan screen reader */}
+        <p className="sr-only">
+          {couple.partnerOne}, son of {parents.groom}. {couple.partnerTwo}, daughter of{" "}
+          {parents.bride}.
+        </p>
+
+        <Rule className="mt-8 max-w-40" />
 
         <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isOpen ? 0 : 1 }}
           transition={{ delay: 1, duration: 0.6 }}
-          className="mt-6 max-w-md font-body text-paper-dim"
+          className="mt-6 max-w-md font-body text-lg text-paper-dim"
         >
-          <p className="text-lg">
-            Tanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk
-            menghadiri acara pernikahan kami.
-          </p>
-          <p className="mt-4 font-mono-wide text-xs uppercase tracking-[0.15em]">
-            Putra {parents.groom}
-            <br />
-            &amp; Putri {parents.bride}
+          <p>
+            With great respect and joy, we cordially invite you to share in the celebration of
+            our wedding.
           </p>
         </m.div>
       </div>
@@ -84,7 +122,7 @@ export function Hero() {
         transition={{ delay: 1.4, duration: 0.6 }}
         className="mx-auto flex cursor-pointer flex-col items-center gap-2 font-mono-wide text-xs uppercase tracking-[0.3em] text-paper-dim hover:text-gold-light"
       >
-        Gulir
+        Scroll
         <span aria-hidden="true" className="block h-8 w-px animate-pulse bg-gold-light" />
       </m.a>
     </section>

@@ -28,7 +28,7 @@ export function Registry() {
   }
 
   return (
-    <SectionShell id="registry" index="04" eyebrow="Hadiah">
+    <SectionShell id="registry" index="04" eyebrow="Gifts">
       <m.div
         initial="hidden"
         whileInView="visible"
@@ -36,7 +36,7 @@ export function Registry() {
         variants={fadeUp}
       >
         <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
-          Doa restu Anda adalah hadiah terbaik. Namun jika ingin memberi tanda kasih —
+          Your blessing is the greatest gift. But should you wish to share a token of love —
         </RevealHeading>
         <div className="mt-16 grid grid-cols-1 gap-8 sm:max-w-md">
           {registry.map((entry) => (
@@ -51,7 +51,7 @@ export function Registry() {
               <div className="mt-6">
                 {entry.kind === "bank" ? (
                   <Button variant="outline" onClick={() => handleCopy(entry.id, entry.ctaHref)}>
-                    {copiedId === entry.id ? "Tersalin" : entry.ctaLabel}
+                    {copiedId === entry.id ? "Copied" : entry.ctaLabel}
                   </Button>
                 ) : (
                   <Button variant="outline" href={entry.ctaHref} target="_blank" rel="noopener noreferrer">

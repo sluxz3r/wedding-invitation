@@ -24,27 +24,27 @@ export function Footer() {
           className="mb-16 -mx-6 sm:-mx-10 lg:-mx-16"
         />
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 sm:flex-row sm:items-end">
-          <p className="font-display text-3xl italic">Sampai jumpa di hari bahagia kami.</p>
-          <nav aria-label="Navigasi footer">
+          <p className="font-display text-3xl italic">See you on our happy day.</p>
+          <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap gap-6 font-mono-wide text-xs uppercase tracking-[0.2em]">
               <li>
-                <a href="#top" data-cursor="Lihat" className="cursor-pointer hover:text-gold-light">
-                  Atas
+                <a href="#top" data-cursor="View" className="cursor-pointer hover:text-gold-light">
+                  Top
                 </a>
               </li>
               <li>
-                <a href="#details" data-cursor="Lihat" className="cursor-pointer hover:text-gold-light">
-                  Acara
+                <a href="#details" data-cursor="View" className="cursor-pointer hover:text-gold-light">
+                  Events
                 </a>
               </li>
               <li>
-                <a href="#ucapan" data-cursor="Lihat" className="cursor-pointer hover:text-gold-light">
-                  Ucapan
+                <a href="#ucapan" data-cursor="View" className="cursor-pointer hover:text-gold-light">
+                  Wishes
                 </a>
               </li>
               <li>
-                <a href="#registry" data-cursor="Lihat" className="cursor-pointer hover:text-gold-light">
-                  Hadiah
+                <a href="#registry" data-cursor="View" className="cursor-pointer hover:text-gold-light">
+                  Gifts
                 </a>
               </li>
             </ul>
@@ -52,7 +52,7 @@ export function Footer() {
         </div>
         <Rule className="mx-auto mt-16 max-w-6xl" />
         <p className="mx-auto mt-6 max-w-6xl font-mono-wide text-[11px] uppercase tracking-[0.2em] text-paper-dim">
-          Dibuat dengan penuh cinta, untuk {couple.partnerOne} &amp; {couple.partnerTwo}.
+          Made with love, for {couple.partnerOne} &amp; {couple.partnerTwo}.
         </p>
       </m.div>
     </footer>
