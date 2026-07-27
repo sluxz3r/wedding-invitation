@@ -82,7 +82,7 @@ export function Countdown() {
   ];
 
   return (
-    <SectionShell id="countdown" index="02" eyebrow="Countdown">
+    <SectionShell id="countdown" index="03" eyebrow="Countdown" alt>
       <m.div
         aria-hidden="true"
         initial="hidden"

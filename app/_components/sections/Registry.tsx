@@ -28,7 +28,7 @@ export function Registry() {
   }
 
   return (
-    <SectionShell id="registry" index="04" eyebrow="Gifts">
+    <SectionShell id="registry" index="05" eyebrow="Gifts" alt>
       <m.div
         initial="hidden"
         whileInView="visible"

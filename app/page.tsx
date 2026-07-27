@@ -1,5 +1,6 @@
 import { Hero } from "@/app/_components/sections/Hero";
 import { EventDetails } from "@/app/_components/sections/EventDetails";
+import { NgunduhMantu } from "@/app/_components/sections/NgunduhMantu";
 import { Countdown } from "@/app/_components/sections/Countdown";
 import { Ucapan } from "@/app/_components/sections/Ucapan";
 import { Registry } from "@/app/_components/sections/Registry";
@@ -10,6 +11,7 @@ export default function Home() {
     <>
       <Hero />
       <EventDetails />
+      <NgunduhMantu />
       <Countdown />
       <Ucapan />
       <Registry />

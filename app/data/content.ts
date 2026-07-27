@@ -70,6 +70,24 @@ export const events: EventDetail[] = [
 // Both events are at the same location — one shared map link/pin for both.
 export const venueMapUrl = "https://maps.app.goo.gl/bShwDUZuXvAQ6BCw7";
 
+// Ngunduh Mantu — the homecoming reception hosted by the groom's family,
+// held a month after the ceremony and in a different city, so it gets its own
+// date, venue and map pin rather than sitting in the `events` list above.
+export const ngunduhMantu = {
+  label: "Ngunduh Mantu",
+  dateDisplay: "Wednesday, 9 September 2026",
+  time: "10:00 AM (WIB) onwards",
+  venueName: "Residence of the Groom's Family",
+  address:
+    "Jl. H. A. Halim No. 47, Paya Roba, Binjai Barat Subdistrict, Binjai City, North Sumatra 20748",
+  dateTimeISO: "2026-09-09T10:00:00",
+  // "Onwards" has no fixed end — this is only here so the calendar entry gets
+  // a sensible block of time rather than a zero-length one.
+  endTimeISO: "2026-09-09T14:00:00",
+  mapUrl: "https://maps.app.goo.gl/8UFW4fJ6Dg77Zgsz7",
+  note: "The homecoming celebration hosted by the groom's family in Binjai — a second chance to gather for those who could not join us in Padang Lawas.",
+};
+
 export type RegistryEntry = {
   id: string;
   kind: "bank" | "wishlist" | "link";
@@ -81,12 +99,20 @@ export type RegistryEntry = {
 
 export const registry: RegistryEntry[] = [
   {
-    id: "bank",
+    id: "bank-bride",
     kind: "bank",
-    title: "Digital Envelope",
+    title: "The Bride's Envelope",
     detail: "Bank Mandiri · Lily Putri Marito · Acc. No. 1830005507735",
     ctaLabel: "Copy account number",
     ctaHref: "1830005507735",
+  },
+  {
+    id: "bank-groom",
+    kind: "bank",
+    title: "The Groom's Envelope",
+    detail: "Bank Mandiri · Arie Azhari · Acc. No. 1370016771939",
+    ctaLabel: "Copy account number",
+    ctaHref: "1370016771939",
   },
   {
     id: "sociabuzz",

@@ -78,7 +78,7 @@ export function Ucapan() {
   }
 
   return (
-    <SectionShell id="ucapan" index="03" eyebrow="Wishes & Prayers" alt>
+    <SectionShell id="ucapan" index="04" eyebrow="Wishes & Prayers">
       <m.div
         initial="hidden"
         whileInView="visible"

@@ -38,6 +38,15 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a
+                  href="#ngunduh-mantu"
+                  data-cursor="View"
+                  className="cursor-pointer hover:text-gold-light"
+                >
+                  Ngunduh Mantu
+                </a>
+              </li>
+              <li>
                 <a href="#ucapan" data-cursor="View" className="cursor-pointer hover:text-gold-light">
                   Wishes
                 </a>

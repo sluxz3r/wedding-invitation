@@ -7,6 +7,7 @@ import { cn } from "@/app/_lib/cn";
 
 const links = [
   { href: "#details", label: "Events" },
+  { href: "#ngunduh-mantu", label: "Ngunduh Mantu" },
   { href: "#ucapan", label: "Wishes" },
   { href: "#registry", label: "Gifts" },
 ];
