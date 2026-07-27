@@ -40,7 +40,10 @@ export function Nav() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-gold/20 bg-ink/60 backdrop-blur-xl">
+    // transform-gpu keeps the bar on its own compositing layer, and the
+    // background is opaque enough to stay readable on its own — the blur is an
+    // enhancement, never what makes the text underneath disappear.
+    <header className="fixed inset-x-0 top-0 z-50 transform-gpu border-b border-gold/20 bg-ink/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:px-10 lg:px-16">
         <a
           href="#top"
