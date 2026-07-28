@@ -47,6 +47,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* land #anchors below the fixed header instead of underneath it — the header
+     is the status-bar inset plus its own 4rem row */
+  scroll-padding-top: calc(env(safe-area-inset-top) + 4rem);
 }
 
 body {
@@ -54,6 +57,12 @@ body {
   color: var(--color-paper);
   font-family: var(--font-body), sans-serif;
   position: relative;
+  /* Zero in portrait and on every device without a display cutout. In landscape
+     on a notched phone this keeps the document clear of the cutout, which
+     viewport-fit=cover would otherwise let it slide under. The ink background
+     propagates to the canvas, so the inset strip is not left blank. */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 /* fine metallic grain, purely decorative — visible against dark surfaces.

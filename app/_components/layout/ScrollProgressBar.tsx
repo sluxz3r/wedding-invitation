@@ -8,7 +8,9 @@ export function ScrollProgressBar() {
   return (
     <m.div
       aria-hidden="true"
-      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gold"
+      // sits on the header's top edge — offset past the status bar, which
+      // top-0 now falls behind
+      className="fixed inset-x-0 top-[env(safe-area-inset-top)] z-[60] h-[3px] origin-left bg-gold"
       style={{ scaleX: scrollYProgress }}
     />
   );

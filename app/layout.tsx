@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { couple, weddingDateDisplay } from "@/app/data/content";
@@ -51,6 +51,25 @@ export const metadata: Metadata = {
     title,
     description,
   },
+};
+
+/**
+ * iOS Safari paints the document edge-to-edge behind the status bar, but
+ * without viewport-fit=cover the *layout* viewport still starts below it. The
+ * fixed header's `top: 0` therefore resolved to 47pt down on an iPhone 13, and
+ * the page scrolled visibly through the strip above it. Opting in makes
+ * `top: 0` the true top of the display; everything that touches a screen edge
+ * then pads itself back with env(safe-area-inset-*), which is 0 everywhere
+ * without a display cutout.
+ *
+ * Next emits `width=device-width, initial-scale=1` by default, so both are
+ * restated here to keep them once this export takes over.
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0a0908", // --color-ink, so Safari's own chrome matches the page
 };
 
 export default function RootLayout({

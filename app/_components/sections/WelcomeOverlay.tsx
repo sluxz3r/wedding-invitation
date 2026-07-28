@@ -101,7 +101,9 @@ export function WelcomeOverlay() {
           </div>
 
           {/* foreground */}
-          <div className="relative z-10 flex min-h-full flex-col items-center justify-center gap-7 overflow-y-auto px-6 py-16 text-center sm:gap-8">
+          {/* foreground padding keeps the label and the CTA clear of the status
+              bar and the home indicator when the content fills a short screen */}
+          <div className="relative z-10 flex min-h-full flex-col items-center justify-center gap-7 overflow-y-auto px-6 pb-[calc(env(safe-area-inset-bottom)+4rem)] pt-[calc(env(safe-area-inset-top)+4rem)] text-center sm:gap-8">
             <m.p
               variants={rise}
               className="gold-shimmer font-mono-wide text-[11px] uppercase tracking-[0.4em] text-gold-light sm:text-xs"

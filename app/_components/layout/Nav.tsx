@@ -40,10 +40,12 @@ export function Nav() {
   }, []);
 
   return (
-    // transform-gpu keeps the bar on its own compositing layer, and the
-    // background is opaque enough to stay readable on its own — the blur is an
-    // enhancement, never what makes the text underneath disappear.
-    <header className="fixed inset-x-0 top-0 z-50 transform-gpu border-b border-gold/20 bg-ink/85 backdrop-blur-xl">
+    // The page is viewport-fit=cover, so top-0 is the true top of the display:
+    // the bar's background covers the status bar and the inset padding pushes
+    // the row below it. The left/right insets matter in landscape, where the
+    // display cutout would otherwise sit over the logo — body handles that for
+    // the document, but this bar is fixed to the viewport, not to body.
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-gold/20 bg-ink/85 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:px-10 lg:px-16">
         <a
           href="#top"

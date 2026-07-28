@@ -12,7 +12,8 @@ const fadeUp = {
 
 export function Footer() {
   return (
-    <footer className="relative bg-ink px-6 py-16 text-paper sm:px-10 lg:px-16">
+    // pb clears the home indicator, which the page now extends behind
+    <footer className="relative bg-ink px-6 pb-[calc(env(safe-area-inset-bottom)+4rem)] pt-16 text-paper sm:px-10 lg:px-16">
       <m.div
         initial="hidden"
         whileInView="visible"

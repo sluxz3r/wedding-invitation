@@ -44,7 +44,9 @@ export function Hero() {
   const { isOpen } = useInvitationOverlay();
 
   return (
-    <section className="relative flex min-h-dvh flex-col justify-between overflow-hidden border-b border-gold/15 bg-ink px-6 pb-10 pt-28 text-paper sm:px-10 lg:px-16">
+    // pt keeps its 7rem clearance below the header now that the section starts
+    // at the true top of the display rather than below the status bar
+    <section className="relative flex min-h-dvh flex-col justify-between overflow-hidden border-b border-gold/15 bg-ink px-6 pb-10 pt-[calc(env(safe-area-inset-top)+7rem)] text-paper sm:px-10 lg:px-16">
       <div className="flex flex-1 flex-col justify-center">
         <EyebrowLabel index="00" className="mb-6">
           {weddingDateDisplay} — {akad.venueName}
