@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { AnimatePresence, m } from "motion/react";
 import { useInvitationOverlay } from "@/app/_components/providers/InvitationOverlayProvider";
+import { useMusic } from "@/app/_components/providers/MusicProvider";
 import { couple, weddingDateDisplay, coverPhoto } from "@/app/data/content";
 import { Button } from "@/app/_components/ui/Button";
 
@@ -24,7 +25,16 @@ const rise = {
 
 export function WelcomeOverlay() {
   const { isOpen, close } = useInvitationOverlay();
+  const { play } = useMusic();
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Opening the invitation is the one guaranteed tap on this page, and the
+  // only moment a browser will hand us an autoplay grant. Escape deliberately
+  // stays silent — that gesture means "dismiss", not "start the music".
+  function openInvitation() {
+    play();
+    close();
+  }
 
   useEffect(() => {
     if (isOpen) buttonRef.current?.focus();
@@ -111,7 +121,7 @@ export function WelcomeOverlay() {
               The Wedding Of
             </m.p>
 
-            <m.div variants={rise} className="flex flex-col items-center">
+            <m.div variants={rise}>
               <h1
                 id="welcome-heading"
                 aria-label={`${couple.partnerOne} & ${couple.partnerTwo}`}
@@ -129,9 +139,6 @@ export function WelcomeOverlay() {
                   </span>
                 </span>
               </h1>
-              <p className="mt-5 max-w-xs font-display text-sm italic leading-relaxed text-paper-dim sm:max-w-md sm:text-base">
-                {couple.partnerOneFull} &amp; {couple.partnerTwoFull}
-              </p>
             </m.div>
 
             {/* ornamental divider */}
@@ -154,7 +161,13 @@ export function WelcomeOverlay() {
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 -z-10 animate-pulse rounded-full bg-gold/25 blur-xl"
               />
-              <Button ref={buttonRef} type="button" variant="primary" onClick={close} className="gap-3">
+              <Button
+                ref={buttonRef}
+                type="button"
+                variant="primary"
+                onClick={openInvitation}
+                className="gap-3"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

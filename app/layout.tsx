@@ -4,10 +4,12 @@ import "./globals.css";
 import { couple, weddingDateDisplay } from "@/app/data/content";
 import { MotionProvider } from "@/app/_components/providers/MotionProvider";
 import { InvitationOverlayProvider } from "@/app/_components/providers/InvitationOverlayProvider";
+import { MusicProvider } from "@/app/_components/providers/MusicProvider";
 import { AppShell } from "@/app/_components/layout/AppShell";
 import { WelcomeOverlay } from "@/app/_components/sections/WelcomeOverlay";
 import { ScrollProgressBar } from "@/app/_components/layout/ScrollProgressBar";
 import { CustomCursor } from "@/app/_components/layout/CustomCursor";
+import { VinylPlayer } from "@/app/_components/layout/VinylPlayer";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -85,10 +87,13 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <MotionProvider>
           <InvitationOverlayProvider>
-            <ScrollProgressBar />
-            <CustomCursor />
-            <WelcomeOverlay />
-            <AppShell>{children}</AppShell>
+            <MusicProvider>
+              <ScrollProgressBar />
+              <CustomCursor />
+              <WelcomeOverlay />
+              <AppShell>{children}</AppShell>
+              <VinylPlayer />
+            </MusicProvider>
           </InvitationOverlayProvider>
         </MotionProvider>
       </body>

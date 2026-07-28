@@ -189,6 +189,48 @@ html.custom-cursor-active button {
   }
 }
 
+/* ── vinyl player ────────────────────────────────────────────────────────
+   The platter turns with a CSS animation rather than a motion transform so
+   that pausing can use animation-play-state: the record holds the angle it
+   stopped at instead of snapping back to zero. */
+@keyframes vinyl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vinyl-spin {
+  animation: vinyl-spin 5s linear infinite;
+}
+.vinyl-spin[data-paused="true"] {
+  animation-play-state: paused;
+}
+
+/* pressed shellac: fine concentric grooves over a near-black disc */
+.vinyl-disc {
+  background-image:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(239, 219, 160, 0.09) 0 0.5px,
+      transparent 0.5px 3px
+    ),
+    radial-gradient(circle at 50% 50%, #241f18 0%, #0d0b0a 68%, #050404 100%);
+}
+
+/* the light-catch, layered above the platter and intentionally not spinning
+   with it — the reflection belongs to the room, not to the record */
+.vinyl-sheen {
+  background-image: conic-gradient(
+    from 200deg at 50% 50%,
+    transparent 0deg,
+    rgba(247, 245, 241, 0.14) 30deg,
+    transparent 72deg,
+    transparent 180deg,
+    rgba(247, 245, 241, 0.1) 210deg,
+    transparent 252deg
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

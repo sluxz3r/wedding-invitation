@@ -7,13 +7,22 @@
  * followed by the Reception. Adjust freely if that doesn't match your context.
  */
 
+// Names are stored without their academic titles and the titles kept beside
+// them, so each surface can pick: the hero states the formal name in full,
+// while the page title, share card and calendar entries stay readable.
 export const couple = {
   partnerOne: "Arie",
   partnerOneFull: "Arie Azhari",
+  partnerOneDegree: "A.Md.Kep.", // D3 Keperawatan — Ahli Madya Keperawatan
   partnerTwo: "Lily",
-  partnerTwoFull: "Lily Putri Marito, S.Kep., Ns., M.Kep.",
+  partnerTwoFull: "Lily Putri Marito",
+  partnerTwoDegree: "S.Kep., Ns., M.Kep.",
   hashtag: "#ArieAndLily",
 };
+
+/** Full name with the academic title appended — the formal invitation form. */
+export const partnerOneFormal = `${couple.partnerOneFull}, ${couple.partnerOneDegree}`;
+export const partnerTwoFormal = `${couple.partnerTwoFull}, ${couple.partnerTwoDegree}`;
 
 export const parents = {
   groom: "Mr. (the late) M. Ridwan & Mrs. Efrida",
@@ -26,6 +35,26 @@ export const parents = {
 export const coverPhoto = {
   src: "/images/welcome.png" as string | null,
   alt: `${couple.partnerOneFull} & ${couple.partnerTwoFull}`,
+};
+
+/**
+ * Background music.
+ *
+ * Drop the audio file into `public/audio/` and name it `wedding-song.mp3`
+ * (or rename it here — `src` is a path relative to /public). MP3 is the safest
+ * format: every browser plays it. Keep it under ~4 MB / 128–192 kbps so the
+ * first load stays quick, and prefer a track that loops without an awkward
+ * seam, since it repeats for as long as the page is open.
+ *
+ * Playback starts from the "Open Invitation" button — browsers only allow
+ * audio that a real tap or click asked for — and the vinyl player at the
+ * bottom-left toggles it after that. Set `src` to null to drop music entirely;
+ * the vinyl player then never renders.
+ */
+export const music = {
+  src: "/audio/wedding-song.mp3" as string | null,
+  title: "Our Song",
+  artist: "",
 };
 
 // ISO 8601 — used to drive the live countdown. Keep this the ceremony start time.

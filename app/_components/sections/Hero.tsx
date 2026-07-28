@@ -1,7 +1,14 @@
 "use client";
 
 import { m } from "motion/react";
-import { couple, parents, weddingDateDisplay, events } from "@/app/data/content";
+import {
+  couple,
+  parents,
+  partnerOneFormal,
+  partnerTwoFormal,
+  weddingDateDisplay,
+  events,
+} from "@/app/data/content";
 import { EyebrowLabel } from "@/app/_components/ui/EyebrowLabel";
 import { Rule } from "@/app/_components/ui/Rule";
 import { useInvitationOverlay } from "@/app/_components/providers/InvitationOverlayProvider";
@@ -66,6 +73,12 @@ export function Hero() {
             </span>
             <m.span
               variants={lineageVariant}
+              className="mt-4 block max-w-md font-display text-lg font-normal italic leading-snug text-gold-light sm:text-xl"
+            >
+              {partnerOneFormal}
+            </m.span>
+            <m.span
+              variants={lineageVariant}
               className="mt-3 block max-w-md font-body text-sm font-normal leading-relaxed text-paper-dim sm:text-base"
             >
               <span className="font-mono-wide text-[11px] uppercase tracking-[0.25em] text-gold-light/80">
@@ -85,6 +98,12 @@ export function Hero() {
             </span>
             <m.span
               variants={lineageVariant}
+              className="mt-4 block max-w-md font-display text-lg font-normal italic leading-snug text-gold-light sm:text-xl"
+            >
+              {partnerTwoFormal}
+            </m.span>
+            <m.span
+              variants={lineageVariant}
               className="mt-3 block max-w-md font-body text-sm font-normal leading-relaxed text-paper-dim sm:text-base"
             >
               <span className="font-mono-wide text-[11px] uppercase tracking-[0.25em] text-gold-light/80">
@@ -98,7 +117,7 @@ export function Hero() {
 
         {/* Versi visual di atas aria-hidden — teks ini yang dibacakan screen reader */}
         <p className="sr-only">
-          {couple.partnerOne}, son of {parents.groom}. {couple.partnerTwo}, daughter of{" "}
+          {partnerOneFormal}, son of {parents.groom}. {partnerTwoFormal}, daughter of{" "}
           {parents.bride}.
         </p>
 
