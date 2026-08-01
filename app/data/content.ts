@@ -25,7 +25,7 @@ export const partnerOneFormal = `${couple.partnerOneFull}, ${couple.partnerOneDe
 export const partnerTwoFormal = `${couple.partnerTwoFull}, ${couple.partnerTwoDegree}`;
 
 export const parents = {
-  groom: "Mr. (the late) M. Ridwan & Mrs. Efrida",
+  groom: "Mr. (the late) M. Ridwan, S.Sos & Mrs. Efrida",
   bride: "Mr. H. Muhd. Dohir Hasibuan, S.Pd & Mrs. Dra. Hj. Nurmintahari",
 };
 
