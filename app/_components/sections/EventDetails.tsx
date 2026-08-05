@@ -6,7 +6,8 @@ import { Button } from "@/app/_components/ui/Button";
 import { Rule } from "@/app/_components/ui/Rule";
 import { CornerFrame } from "@/app/_components/ui/CornerFrame";
 import { RevealHeading } from "@/app/_components/ui/RevealHeading";
-import { couple, events, venueMapUrl } from "@/app/data/content";
+import { couple, venueMapUrl } from "@/app/data/content";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 import { googleCalendarUrl } from "@/app/_lib/calendar";
 import { handleSpotlightMove } from "@/app/_lib/spotlight";
 
@@ -16,23 +17,26 @@ const fadeUp = {
 };
 
 export function EventDetails() {
+  const { t, content } = useLanguage();
+  const { events } = content;
   const title = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
   const [akad, resepsi] = events;
 
   // Same location, one occasion — a single combined calendar entry rather
-  // than one per card.
+  // than one per card. The entry is written in whichever language the guest is
+  // reading, since that is what lands in their calendar.
   const calendarUrl = googleCalendarUrl({
-    title: `Ceremony & Reception — ${title}`,
-    description: `Marriage ceremony at ${akad.time}, followed by the reception at ${resepsi.time}.`,
+    title: t.events.calendarTitle(title),
+    description: t.events.calendarDescription(akad.time, resepsi.time),
     location: akad.address,
     startISO: akad.dateTimeISO,
     endISO: resepsi.endTimeISO,
   });
 
   return (
-    <SectionShell id="details" index="01" eyebrow="Events" alt>
+    <SectionShell id="details" index="01" eyebrow={t.sections.details} alt>
       <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
-        Two ceremonies, one blessed day.
+        {t.events.heading}
       </RevealHeading>
       <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2">
         {events.map((event, i) => (
@@ -65,10 +69,10 @@ export function EventDetails() {
 
       <div className="mt-10 flex flex-wrap gap-3">
         <Button variant="outline" href={calendarUrl} target="_blank" rel="noopener noreferrer">
-          Add to Calendar
+          {t.events.addToCalendar}
         </Button>
         <Button variant="outline" href={venueMapUrl} target="_blank" rel="noopener noreferrer">
-          View Location on Google Maps
+          {t.events.viewOnMaps}
         </Button>
       </div>
     </SectionShell>

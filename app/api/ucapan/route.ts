@@ -19,6 +19,18 @@ const IP_SALT = process.env.UCAPAN_IP_SALT ?? "arie-lily-guestbook";
 
 export const runtime = "nodejs";
 
+/**
+ * Failures come back as a stable code, not a sentence: the page is bilingual
+ * and the guest's language lives in the browser, so the wording belongs to the
+ * client (see `ucapan.errors` in data/dictionary.ts). Add a code here and the
+ * dictionary needs the matching entry.
+ */
+type WishErrorCode = "invalid" | "unconfigured" | "rate_limited" | "save_failed";
+
+function failure(code: WishErrorCode, status: number) {
+  return NextResponse.json({ ok: false, code }, { status });
+}
+
 // Hash the client IP for the per-IP rate limit — the raw IP is never stored.
 function clientIpHash(request: Request): string | null {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -32,15 +44,12 @@ export async function POST(request: Request) {
   const parsed = wishSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ ok: false, error: "Invalid submission." }, { status: 400 });
+    return failure("invalid", 400);
   }
 
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     console.error("[wishes] Supabase env vars are not configured.");
-    return NextResponse.json(
-      { ok: false, error: "The server is not configured yet." },
-      { status: 500 },
-    );
+    return failure("unconfigured", 500);
   }
 
   // All inserts go through the submit_wish() RPC, which enforces the per-IP
@@ -70,15 +79,9 @@ export async function POST(request: Request) {
 
   // The RPC raises 'rate_limited' when the same IP submits within 5 minutes.
   if (detail.includes("rate_limited")) {
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "You've just sent a wish. Please wait a few minutes before sending another.",
-      },
-      { status: 429 },
-    );
+    return failure("rate_limited", 429);
   }
 
   console.error("[wishes] Supabase RPC failed:", res.status, detail);
-  return NextResponse.json({ ok: false, error: "Could not save your wish." }, { status: 502 });
+  return failure("save_failed", 502);
 }

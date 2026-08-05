@@ -1,17 +1,11 @@
 "use client";
 
 import { m } from "motion/react";
-import {
-  couple,
-  parents,
-  partnerOneFormal,
-  partnerTwoFormal,
-  weddingDateDisplay,
-  events,
-} from "@/app/data/content";
+import { couple, partnerOneFormal, partnerTwoFormal } from "@/app/data/content";
 import { EyebrowLabel } from "@/app/_components/ui/EyebrowLabel";
 import { Rule } from "@/app/_components/ui/Rule";
 import { useInvitationOverlay } from "@/app/_components/providers/InvitationOverlayProvider";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 
 const nameContainer = {
   hidden: {},
@@ -47,7 +41,9 @@ function KineticWord({ word }: { word: string }) {
 }
 
 export function Hero() {
-  const akad = events[0];
+  const { t, content } = useLanguage();
+  const { parents, weddingDateDisplay } = content;
+  const akad = content.events[0];
   const { isOpen } = useInvitationOverlay();
 
   return (
@@ -82,7 +78,7 @@ export function Hero() {
               className="mt-3 block max-w-md font-body text-sm font-normal leading-relaxed text-paper-dim sm:text-base"
             >
               <span className="font-mono-wide text-[11px] uppercase tracking-[0.25em] text-gold-light/80">
-                Son of
+                {t.hero.sonOf}
               </span>
               <br />
               {parents.groom}
@@ -107,7 +103,7 @@ export function Hero() {
               className="mt-3 block max-w-md font-body text-sm font-normal leading-relaxed text-paper-dim sm:text-base"
             >
               <span className="font-mono-wide text-[11px] uppercase tracking-[0.25em] text-gold-light/80">
-                Daughter of
+                {t.hero.daughterOf}
               </span>
               <br />
               {parents.bride}
@@ -117,8 +113,7 @@ export function Hero() {
 
         {/* Versi visual di atas aria-hidden — teks ini yang dibacakan screen reader */}
         <p className="sr-only">
-          {partnerOneFormal}, son of {parents.groom}. {partnerTwoFormal}, daughter of{" "}
-          {parents.bride}.
+          {t.hero.lineage(partnerOneFormal, parents.groom, partnerTwoFormal, parents.bride)}
         </p>
 
         <Rule className="mt-8 max-w-40" />
@@ -129,10 +124,7 @@ export function Hero() {
           transition={{ delay: 1, duration: 0.6 }}
           className="mt-6 max-w-md font-body text-lg text-paper-dim"
         >
-          <p>
-            With great respect and joy, we cordially invite you to share in the celebration of
-            our wedding.
-          </p>
+          <p>{t.hero.invitation}</p>
         </m.div>
       </div>
 
@@ -143,7 +135,7 @@ export function Hero() {
         transition={{ delay: 1.4, duration: 0.6 }}
         className="mx-auto flex cursor-pointer flex-col items-center gap-2 font-mono-wide text-xs uppercase tracking-[0.3em] text-paper-dim hover:text-gold-light"
       >
-        Scroll
+        {t.hero.scroll}
         <span aria-hidden="true" className="block h-8 w-px animate-pulse bg-gold-light" />
       </m.a>
     </section>

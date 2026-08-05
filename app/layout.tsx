@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
-import { couple, weddingDateDisplay } from "@/app/data/content";
+import { baselineLocale, openGraphLocales } from "@/app/_lib/i18n";
+import { couple, getContent } from "@/app/data/content";
+import { getDictionary } from "@/app/data/dictionary";
 import { MotionProvider } from "@/app/_components/providers/MotionProvider";
+import { LanguageProvider } from "@/app/_components/providers/LanguageProvider";
 import { InvitationOverlayProvider } from "@/app/_components/providers/InvitationOverlayProvider";
 import { MusicProvider } from "@/app/_components/providers/MusicProvider";
 import { AppShell } from "@/app/_components/layout/AppShell";
@@ -33,8 +36,13 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
+// Metadata and the generated og:image are baked once, so they can only speak
+// one language: the baseline (see _lib/i18n.ts). The page itself follows the
+// guest's browser — and their toggle — from hydration onwards.
 const title = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
-const description = `With gratitude, we invite you to celebrate our wedding — ${weddingDateDisplay}.`;
+const description = getDictionary(baselineLocale).meta.description(
+  getContent(baselineLocale).weddingDateDisplay,
+);
 
 export const metadata: Metadata = {
   // TODO: once deployed, set this to the real domain so social crawlers can
@@ -46,7 +54,7 @@ export const metadata: Metadata = {
     title,
     description,
     type: "website",
-    locale: "en_US",
+    locale: openGraphLocales[baselineLocale],
   },
   twitter: {
     card: "summary_large_image",
@@ -80,21 +88,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // LanguageProvider rewrites this attribute once it knows the guest's
+    // language; the baseline is what the server sends and what hydration matches.
     <html
-      lang="en"
+      lang={baselineLocale}
       className={`${playfair.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <MotionProvider>
-          <InvitationOverlayProvider>
-            <MusicProvider>
-              <ScrollProgressBar />
-              <CustomCursor />
-              <WelcomeOverlay />
-              <AppShell>{children}</AppShell>
-              <VinylPlayer />
-            </MusicProvider>
-          </InvitationOverlayProvider>
+          <LanguageProvider>
+            <InvitationOverlayProvider>
+              <MusicProvider>
+                <ScrollProgressBar />
+                <CustomCursor />
+                <WelcomeOverlay />
+                <AppShell>{children}</AppShell>
+                <VinylPlayer />
+              </MusicProvider>
+            </InvitationOverlayProvider>
+          </LanguageProvider>
         </MotionProvider>
       </body>
     </html>

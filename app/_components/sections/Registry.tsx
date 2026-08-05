@@ -7,7 +7,7 @@ import { Button } from "@/app/_components/ui/Button";
 import { CornerFrame } from "@/app/_components/ui/CornerFrame";
 import { RevealHeading } from "@/app/_components/ui/RevealHeading";
 import { handleSpotlightMove } from "@/app/_lib/spotlight";
-import { registry } from "@/app/data/content";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -15,6 +15,8 @@ const fadeUp = {
 };
 
 export function Registry() {
+  const { t, content } = useLanguage();
+  const { registry } = content;
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   async function handleCopy(id: string, value: string) {
@@ -28,7 +30,7 @@ export function Registry() {
   }
 
   return (
-    <SectionShell id="registry" index="05" eyebrow="Gifts" alt>
+    <SectionShell id="registry" index="05" eyebrow={t.sections.registry} alt>
       <m.div
         initial="hidden"
         whileInView="visible"
@@ -36,7 +38,7 @@ export function Registry() {
         variants={fadeUp}
       >
         <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
-          Your blessing is the greatest gift. But should you wish to share a token of love —
+          {t.registry.heading}
         </RevealHeading>
         <div className="mt-16 grid grid-cols-1 gap-8 sm:max-w-md">
           {registry.map((entry) => (
@@ -51,7 +53,7 @@ export function Registry() {
               <div className="mt-6">
                 {entry.kind === "bank" ? (
                   <Button variant="outline" onClick={() => handleCopy(entry.id, entry.ctaHref)}>
-                    {copiedId === entry.id ? "Copied" : entry.ctaLabel}
+                    {copiedId === entry.id ? t.registry.copied : entry.ctaLabel}
                   </Button>
                 ) : (
                   <Button variant="outline" href={entry.ctaHref} target="_blank" rel="noopener noreferrer">

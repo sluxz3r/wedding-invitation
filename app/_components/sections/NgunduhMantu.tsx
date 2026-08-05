@@ -6,7 +6,8 @@ import { Button } from "@/app/_components/ui/Button";
 import { Rule } from "@/app/_components/ui/Rule";
 import { CornerFrame } from "@/app/_components/ui/CornerFrame";
 import { RevealHeading } from "@/app/_components/ui/RevealHeading";
-import { couple, ngunduhMantu } from "@/app/data/content";
+import { couple } from "@/app/data/content";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 import { googleCalendarUrl } from "@/app/_lib/calendar";
 import { handleSpotlightMove } from "@/app/_lib/spotlight";
 
@@ -16,20 +17,26 @@ const fadeUp = {
 };
 
 export function NgunduhMantu() {
+  const { t, content } = useLanguage();
+  const { ngunduhMantu } = content;
   const title = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
 
   const calendarUrl = googleCalendarUrl({
-    title: `${ngunduhMantu.label} — ${title}`,
-    description: `${ngunduhMantu.label} at ${ngunduhMantu.venueName}, from ${ngunduhMantu.time}.`,
+    title: t.ngunduhMantu.calendarTitle(ngunduhMantu.label, title),
+    description: t.ngunduhMantu.calendarDescription(
+      ngunduhMantu.label,
+      ngunduhMantu.venueName,
+      ngunduhMantu.time,
+    ),
     location: ngunduhMantu.address,
     startISO: ngunduhMantu.dateTimeISO,
     endISO: ngunduhMantu.endTimeISO,
   });
 
   return (
-    <SectionShell id="ngunduh-mantu" index="02" eyebrow="Ngunduh Mantu">
+    <SectionShell id="ngunduh-mantu" index="02" eyebrow={ngunduhMantu.label}>
       <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
-        And once more, at the groom&apos;s family home.
+        {t.ngunduhMantu.heading}
       </RevealHeading>
 
       <m.div
@@ -57,7 +64,7 @@ export function NgunduhMantu() {
 
       <div className="mt-10 flex flex-wrap gap-3">
         <Button variant="outline" href={calendarUrl} target="_blank" rel="noopener noreferrer">
-          Add to Calendar
+          {t.events.addToCalendar}
         </Button>
         <Button
           variant="outline"
@@ -65,7 +72,7 @@ export function NgunduhMantu() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          View Location on Google Maps
+          {t.events.viewOnMaps}
         </Button>
       </div>
     </SectionShell>

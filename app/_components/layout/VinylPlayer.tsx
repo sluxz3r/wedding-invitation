@@ -4,6 +4,7 @@ import { AnimatePresence, m } from "motion/react";
 import { couple, music } from "@/app/data/content";
 import { useInvitationOverlay } from "@/app/_components/providers/InvitationOverlayProvider";
 import { useMusic } from "@/app/_components/providers/MusicProvider";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 import { cn } from "@/app/_lib/cn";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -19,10 +20,11 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 export function VinylPlayer() {
   const { isOpen } = useInvitationOverlay();
   const { isAvailable, isPlaying, toggle } = useMusic();
+  const { t, content } = useLanguage();
 
   if (!isAvailable) return null;
 
-  const track = music.artist ? `${music.title} — ${music.artist}` : music.title;
+  const track = music.artist ? `${content.musicTitle} — ${music.artist}` : content.musicTitle;
 
   return (
     <AnimatePresence>
@@ -42,10 +44,10 @@ export function VinylPlayer() {
           <button
             type="button"
             onClick={toggle}
-            data-cursor={isPlaying ? "Pause" : "Play"}
+            data-cursor={isPlaying ? t.cursor.pause : t.cursor.play}
             // The label carries the state, so no aria-pressed — that would
             // have screen readers announce the toggle twice, and disagree.
-            aria-label={isPlaying ? `Pause music — ${track}` : `Play music — ${track}`}
+            aria-label={isPlaying ? t.music.pauseLabel(track) : t.music.playLabel(track)}
             className="group flex cursor-pointer items-center"
           >
             <span className="relative block h-16 w-16 shrink-0 sm:h-[4.5rem] sm:w-[4.5rem]">
@@ -106,7 +108,7 @@ export function VinylPlayer() {
               className="ml-0 max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-500 ease-[var(--ease-editorial)] pointer-fine:group-hover:ml-3 pointer-fine:group-hover:max-w-[15rem] pointer-fine:group-hover:opacity-100"
             >
               <span className="block border border-gold/40 bg-ink/80 px-3 py-2 font-mono-wide text-[10px] uppercase tracking-[0.2em] text-gold-light backdrop-blur-sm">
-                {isPlaying ? "Now playing" : "Paused"} · {track}
+                {isPlaying ? t.music.nowPlaying : t.music.paused} · {track}
               </span>
             </span>
           </button>

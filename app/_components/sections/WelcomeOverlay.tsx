@@ -5,8 +5,10 @@ import Image from "next/image";
 import { AnimatePresence, m } from "motion/react";
 import { useInvitationOverlay } from "@/app/_components/providers/InvitationOverlayProvider";
 import { useMusic } from "@/app/_components/providers/MusicProvider";
-import { couple, weddingDateDisplay, coverPhoto } from "@/app/data/content";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
+import { couple, coverPhoto } from "@/app/data/content";
 import { Button } from "@/app/_components/ui/Button";
+import { LanguageToggle } from "@/app/_components/layout/LanguageToggle";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -26,6 +28,7 @@ const rise = {
 export function WelcomeOverlay() {
   const { isOpen, close } = useInvitationOverlay();
   const { play } = useMusic();
+  const { t, content } = useLanguage();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Opening the invitation is the one guaranteed tap on this page, and the
@@ -110,6 +113,18 @@ export function WelcomeOverlay() {
             />
           </div>
 
+          {/* Language first, before the invitation is even opened — this screen
+              is where a guest decides they are in the wrong one, and the header
+              nav is still behind the overlay. Animated on its own timeline, not
+              the staggered stage, so it settles ahead of the names. */}
+          <m.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.3, ease: EASE } }}
+            className="absolute right-[calc(env(safe-area-inset-right)+1.25rem)] top-[calc(env(safe-area-inset-top)+1.25rem)] z-20"
+          >
+            <LanguageToggle className="bg-ink/50 backdrop-blur-sm" />
+          </m.div>
+
           {/* foreground */}
           {/* foreground padding keeps the label and the CTA clear of the status
               bar and the home indicator when the content fills a short screen */}
@@ -118,7 +133,7 @@ export function WelcomeOverlay() {
               variants={rise}
               className="gold-shimmer font-mono-wide text-[11px] uppercase tracking-[0.4em] text-gold-light sm:text-xs"
             >
-              The Wedding Of
+              {t.welcome.eyebrow}
             </m.p>
 
             <m.div variants={rise}>
@@ -152,7 +167,7 @@ export function WelcomeOverlay() {
               variants={rise}
               className="font-mono-wide text-xs uppercase tracking-[0.3em] text-gold-light"
             >
-              {weddingDateDisplay}
+              {content.weddingDateDisplay}
             </m.p>
 
             {/* CTA */}
@@ -183,7 +198,7 @@ export function WelcomeOverlay() {
                     d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.98l7.5-4.04a2.25 2.25 0 0 1 2.134 0l7.5 4.04a2.25 2.25 0 0 1 1.183 1.98V19.5Z"
                   />
                 </svg>
-                Open Invitation
+                {t.welcome.openInvitation}
               </Button>
             </m.div>
           </div>

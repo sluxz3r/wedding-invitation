@@ -1,7 +1,14 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { couple, weddingDateDisplay } from "@/app/data/content";
+import { baselineLocale } from "@/app/_lib/i18n";
+import { couple, getContent } from "@/app/data/content";
+import { getDictionary } from "@/app/data/dictionary";
+
+// A share card is rendered once and cached by whoever crawls it, so it speaks
+// the baseline language only — there is no reader to follow at that point.
+const t = getDictionary(baselineLocale);
+const { weddingDateDisplay } = getContent(baselineLocale);
 
 export const alt = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
 export const size = { width: 1200, height: 630 };
@@ -63,7 +70,7 @@ export default async function Image() {
               color: "#c9a227",
             }}
           >
-            The Wedding Of
+            {t.welcome.eyebrow}
           </span>
           <span style={{ marginTop: 22, fontSize: 46, fontWeight: 700, color: "#f7f5f1" }}>
             {couple.partnerOneFull}

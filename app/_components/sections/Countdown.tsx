@@ -5,6 +5,7 @@ import { AnimatePresence, m } from "motion/react";
 import { SectionShell } from "@/app/_components/layout/SectionShell";
 import { CornerFrame } from "@/app/_components/ui/CornerFrame";
 import { handleSpotlightMove } from "@/app/_lib/spotlight";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 import { weddingDateISO } from "@/app/data/content";
 
 type Remaining = { days: number; hours: number; minutes: number; seconds: number; done: boolean };
@@ -50,6 +51,7 @@ function FlipNumber({ value }: { value: string }) {
 }
 
 export function Countdown() {
+  const { t } = useLanguage();
   const target = new Date(weddingDateISO).getTime();
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
@@ -70,19 +72,19 @@ export function Countdown() {
   // when the coarse day/hour figures do, even though it recomputes every second.
   const announced = remaining
     ? remaining.done
-      ? "The day we've waited for is here."
-      : `${remaining.days} days and ${remaining.hours} hours to go.`
+      ? t.countdown.announceArrived
+      : t.countdown.announceRemaining(remaining.days, remaining.hours)
     : "";
 
   const units = [
-    { label: "Days", value: display.days },
-    { label: "Hours", value: display.hours },
-    { label: "Minutes", value: display.minutes },
-    { label: "Seconds", value: display.seconds },
+    { id: "days", label: t.countdown.days, value: display.days },
+    { id: "hours", label: t.countdown.hours, value: display.hours },
+    { id: "minutes", label: t.countdown.minutes, value: display.minutes },
+    { id: "seconds", label: t.countdown.seconds, value: display.seconds },
   ];
 
   return (
-    <SectionShell id="countdown" index="03" eyebrow="Countdown" alt>
+    <SectionShell id="countdown" index="03" eyebrow={t.countdown.eyebrow} alt>
       <m.div
         aria-hidden="true"
         initial="hidden"
@@ -93,7 +95,7 @@ export function Countdown() {
       >
         {units.map((unit) => (
           <div
-            key={unit.label}
+            key={unit.id}
             onMouseMove={handleSpotlightMove}
             className="spotlight relative border border-gold/30 bg-ink p-6 text-center transition duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_-8px_rgba(201,162,39,0.35)] active:-translate-y-1 active:shadow-[0_12px_32px_-8px_rgba(201,162,39,0.35)]"
           >

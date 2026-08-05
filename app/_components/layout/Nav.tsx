@@ -3,19 +3,23 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
 import { couple } from "@/app/data/content";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
+import { LanguageToggle } from "@/app/_components/layout/LanguageToggle";
 import { cn } from "@/app/_lib/cn";
 
+// The anchor is the fixed part; the name beside it is looked up per language.
 const links = [
-  { href: "#details", label: "Events" },
-  { href: "#ngunduh-mantu", label: "Ngunduh Mantu" },
-  { href: "#ucapan", label: "Wishes" },
-  { href: "#registry", label: "Gifts" },
-];
+  { href: "#details", key: "details" },
+  { href: "#ngunduh-mantu", key: "ngunduhMantu" },
+  { href: "#ucapan", key: "ucapan" },
+  { href: "#registry", key: "registry" },
+] as const;
 
 const underline =
   "relative py-1 after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-center after:bg-gold-light after:transition-transform after:duration-300 after:content-['']";
 
 export function Nav() {
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [activeHref, setActiveHref] = useState<string | null>(null);
 
@@ -46,11 +50,11 @@ export function Nav() {
     // display cutout would otherwise sit over the logo — body handles that for
     // the document, but this bar is fixed to the viewport, not to body.
     <header className="fixed inset-x-0 top-0 z-50 border-b border-gold/20 bg-ink/85 pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:px-10 lg:px-16">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6 sm:px-10 lg:px-16">
         <a
           href="#top"
-          data-cursor="Top"
-          aria-label={`${couple.partnerOne} & ${couple.partnerTwo} — back to top`}
+          data-cursor={t.cursor.top}
+          aria-label={t.nav.backToTop(`${couple.partnerOne} & ${couple.partnerTwo}`)}
           className="font-display text-lg italic tracking-tight text-gold-light"
         >
           <span aria-hidden="true">
@@ -58,56 +62,63 @@ export function Nav() {
           </span>
         </a>
 
-        <nav aria-label="Section navigation" className="hidden md:block">
-          <ul className="flex items-center gap-8 font-mono-wide text-xs uppercase tracking-[0.2em] text-paper">
-            {links.map((link) => {
-              const active = activeHref === link.href;
-              return (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    aria-current={active ? "true" : undefined}
-                    data-cursor="View"
-                    className={cn(
-                      "cursor-pointer",
-                      underline,
-                      active
-                        ? "text-gold-light after:scale-x-100"
-                        : "after:scale-x-0 hover:text-gold-light hover:after:scale-x-100 active:after:scale-x-100",
-                    )}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <div className="flex items-center gap-4 sm:gap-6">
+          <nav aria-label={t.nav.sectionNavigation} className="hidden md:block">
+            <ul className="flex items-center gap-8 font-mono-wide text-xs uppercase tracking-[0.2em] text-paper">
+              {links.map((link) => {
+                const active = activeHref === link.href;
+                return (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      aria-current={active ? "true" : undefined}
+                      data-cursor={t.cursor.view}
+                      className={cn(
+                        "cursor-pointer",
+                        underline,
+                        active
+                          ? "text-gold-light after:scale-x-100"
+                          : "after:scale-x-0 hover:text-gold-light hover:after:scale-x-100 active:after:scale-x-100",
+                      )}
+                    >
+                      {t.sections[link.key]}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
-        <button
-          type="button"
-          className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center md:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span className="relative block h-4 w-6">
-            <span
-              className={`absolute inset-x-0 top-0 h-[2px] bg-gold-light transition-transform duration-200 ${open ? "translate-y-[7px] rotate-45" : ""}`}
-            />
-            <span
-              className={`absolute inset-x-0 bottom-0 h-[2px] bg-gold-light transition-transform duration-200 ${open ? "-translate-y-[7px] -rotate-45" : ""}`}
-            />
-          </span>
-        </button>
+          {/* Stays in the bar on touch rather than inside the menu: switching
+              language is the one control a guest may need before they have
+              worked out what the menu button does. */}
+          <LanguageToggle />
+
+          <button
+            type="button"
+            className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center md:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span className="relative block h-4 w-6">
+              <span
+                className={`absolute inset-x-0 top-0 h-[2px] bg-gold-light transition-transform duration-200 ${open ? "translate-y-[7px] rotate-45" : ""}`}
+              />
+              <span
+                className={`absolute inset-x-0 bottom-0 h-[2px] bg-gold-light transition-transform duration-200 ${open ? "-translate-y-[7px] -rotate-45" : ""}`}
+              />
+            </span>
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
         {open ? (
           <m.nav
             id="mobile-nav"
-            aria-label="Section navigation"
+            aria-label={t.nav.sectionNavigation}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -128,7 +139,7 @@ export function Nav() {
                         active && "text-gold-light",
                       )}
                     >
-                      {link.label}
+                      {t.sections[link.key]}
                     </a>
                   </li>
                 );

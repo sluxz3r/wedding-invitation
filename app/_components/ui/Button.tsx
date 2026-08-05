@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 import { m } from "motion/react";
 import { cn } from "@/app/_lib/cn";
 import { useMagneticHover } from "@/app/_lib/useMagneticHover";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 
 type Variant = "primary" | "outline";
 
@@ -48,6 +49,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
   function Button({ variant = "primary", className, children, ...props }, forwardedRef) {
     const classes = cn(base, variants[variant], className, "cursor-pointer");
     const magnetic = useMagneticHover<HTMLButtonElement | HTMLAnchorElement>();
+    // Only for the word the custom cursor shows on hover — the button's own
+    // text is whatever the caller passed in.
+    const { t } = useLanguage();
 
     if ("href" in props && props.href) {
       const { href, ...anchorProps } = props;
@@ -55,7 +59,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         <m.a
           ref={mergeRefs(forwardedRef, magnetic.ref)}
           href={href}
-          data-cursor="Click"
+          data-cursor={t.cursor.click}
           className={classes}
           style={magnetic.style}
           onMouseMove={magnetic.onMouseMove}
@@ -76,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     return (
       <m.button
         ref={mergeRefs(forwardedRef, magnetic.ref)}
-        data-cursor="Click"
+        data-cursor={t.cursor.click}
         className={classes}
         style={magnetic.style}
         onMouseMove={magnetic.onMouseMove}

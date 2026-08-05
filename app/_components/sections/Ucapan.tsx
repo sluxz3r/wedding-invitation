@@ -5,9 +5,16 @@ import { AnimatePresence, m } from "motion/react";
 import { SectionShell } from "@/app/_components/layout/SectionShell";
 import { Button } from "@/app/_components/ui/Button";
 import { RevealHeading } from "@/app/_components/ui/RevealHeading";
+import { useLanguage } from "@/app/_components/providers/LanguageProvider";
+import type { Dictionary } from "@/app/data/dictionary";
 
 type FormState = { name: string; message: string };
-type FieldErrors = Partial<Record<"name" | "message", string>>;
+
+// Feedback is held as a dictionary key rather than a finished sentence, so a
+// guest who switches language while an error is on screen sees it switch too.
+type FieldErrorKey = "nameRequired" | "messageRequired";
+type FieldErrors = Partial<Record<"name" | "message", FieldErrorKey>>;
+type ErrorCode = keyof Dictionary["ucapan"]["errors"];
 
 const initialState: FormState = { name: "", message: "" };
 
@@ -20,19 +27,25 @@ const floatingLabel =
   "pointer-events-none absolute left-4 top-3.5 origin-left font-mono-wide text-sm uppercase tracking-[0.2em] text-paper-dim transition-all duration-200 peer-focus:-top-6 peer-focus:left-0 peer-focus:text-xs peer-focus:text-gold-light peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:left-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gold-light";
 
 export function Ucapan() {
+  const { t } = useLanguage();
   const [values, setValues] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [statusMessage, setStatusMessage] = useState("");
+  const [errorCode, setErrorCode] = useState<ErrorCode>("generic");
 
   const nameRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
   function validate(): FieldErrors {
     const next: FieldErrors = {};
-    if (!values.name.trim()) next.name = "Please enter your name.";
-    if (!values.message.trim()) next.message = "Please write your wishes or prayer.";
+    if (!values.name.trim()) next.name = "nameRequired";
+    if (!values.message.trim()) next.message = "messageRequired";
     return next;
+  }
+
+  function fail(code: ErrorCode) {
+    setStatus("error");
+    setErrorCode(code);
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -47,7 +60,6 @@ export function Ucapan() {
     }
 
     setStatus("loading");
-    setStatusMessage("");
 
     try {
       const response = await fetch("/api/ucapan", {
@@ -57,28 +69,33 @@ export function Ucapan() {
       });
 
       if (!response.ok) {
-        const data = (await response.json().catch(() => null)) as { error?: string } | null;
-        setStatus("error");
-        setStatusMessage(
-          data?.error ?? "Something went wrong. Please try again in a moment.",
-        );
+        // The route replies with a code, not a sentence — the wording is ours,
+        // in whichever language the guest is reading.
+        const data = (await response.json().catch(() => null)) as { code?: string } | null;
+        const code = data?.code;
+        fail(code && code in t.ucapan.errors ? (code as ErrorCode) : "generic");
         return;
       }
 
       setStatus("success");
-      setStatusMessage("Thank you for your wishes and prayers — they mean the world to us.");
       setValues(initialState);
       window.setTimeout(() => {
         setStatus((current) => (current === "success" ? "idle" : current));
       }, 2500);
     } catch {
-      setStatus("error");
-      setStatusMessage("Something went wrong. Please try again in a moment.");
+      fail("generic");
     }
   }
 
+  const feedback =
+    status === "success"
+      ? t.ucapan.success
+      : status === "error"
+        ? t.ucapan.errors[errorCode]
+        : "";
+
   return (
-    <SectionShell id="ucapan" index="04" eyebrow="Wishes & Prayers">
+    <SectionShell id="ucapan" index="04" eyebrow={t.ucapan.eyebrow}>
       <m.div
         initial="hidden"
         whileInView="visible"
@@ -86,7 +103,7 @@ export function Ucapan() {
         variants={fadeUp}
       >
         <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
-          Leave us your warmest wishes.
+          {t.ucapan.heading}
         </RevealHeading>
 
         <form noValidate onSubmit={handleSubmit} className="mt-10 flex max-w-xl flex-col gap-8">
@@ -106,11 +123,11 @@ export function Ucapan() {
               className="peer min-h-11 w-full border border-gold/30 bg-ink px-4 py-3 font-body text-paper outline-none focus-visible:border-gold-light"
             />
             <label htmlFor="ucapan-name" className={floatingLabel}>
-              Name <span aria-hidden="true">*</span>
+              {t.ucapan.nameLabel} <span aria-hidden="true">*</span>
             </label>
             {errors.name ? (
               <p id="ucapan-name-error" className="mt-2 font-mono-wide text-xs text-error">
-                {errors.name}
+                {t.ucapan[errors.name]}
               </p>
             ) : null}
           </div>
@@ -130,11 +147,11 @@ export function Ucapan() {
               className="peer w-full border border-gold/30 bg-ink px-4 py-3 font-body text-paper outline-none focus-visible:border-gold-light"
             />
             <label htmlFor="ucapan-message" className={floatingLabel}>
-              Wishes &amp; Prayers <span aria-hidden="true">*</span>
+              {t.ucapan.messageLabel} <span aria-hidden="true">*</span>
             </label>
             {errors.message ? (
               <p id="ucapan-message-error" className="mt-2 font-mono-wide text-xs text-error">
-                {errors.message}
+                {t.ucapan[errors.message]}
               </p>
             ) : null}
           </div>
@@ -159,7 +176,7 @@ export function Ucapan() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  Sent
+                  {t.ucapan.sent}
                 </m.span>
               ) : (
                 <m.span
@@ -169,7 +186,7 @@ export function Ucapan() {
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {status === "loading" ? "Sending…" : "Send Wishes"}
+                  {status === "loading" ? t.ucapan.submitting : t.ucapan.submit}
                 </m.span>
               )}
             </AnimatePresence>
@@ -180,7 +197,7 @@ export function Ucapan() {
             aria-live="polite"
             className={`min-h-4 font-mono-wide text-xs ${status === "error" ? "text-error" : "text-gold-light"}`}
           >
-            {statusMessage}
+            {feedback}
           </p>
         </form>
       </m.div>
