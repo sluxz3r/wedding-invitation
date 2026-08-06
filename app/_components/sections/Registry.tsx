@@ -7,6 +7,13 @@ import { Button } from "@/app/_components/ui/Button";
 import { CornerFrame } from "@/app/_components/ui/CornerFrame";
 import { RevealHeading } from "@/app/_components/ui/RevealHeading";
 import { handleSpotlightMove } from "@/app/_lib/spotlight";
+import { whatsappUrl } from "@/app/_lib/whatsapp";
+import {
+  couple,
+  flowerBoardPricing,
+  groomBankAccount,
+  type RegistryEntry,
+} from "@/app/data/content";
 import { useLanguage } from "@/app/_components/providers/LanguageProvider";
 
 const fadeUp = {
@@ -16,8 +23,27 @@ const fadeUp = {
 
 export function Registry() {
   const { t, content } = useLanguage();
-  const { registry } = content;
+  const { registry, ngunduhMantu } = content;
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Flower boards go to the ngunduh mantu, so the pre-written message quotes
+  // that event's date and address — read from the content rather than repeated,
+  // so a change to the venue can never leave the message pointing elsewhere.
+  function linkFor(entry: RegistryEntry): string {
+    if (entry.kind !== "whatsapp") return entry.ctaHref;
+    return whatsappUrl({
+      phone: entry.ctaHref,
+      message: t.registry.flowerMessage({
+        names: `${couple.partnerOne} & ${couple.partnerTwo}`,
+        eventLabel: ngunduhMantu.label,
+        dateDisplay: ngunduhMantu.dateDisplay,
+        venueName: ngunduhMantu.venueName,
+        address: ngunduhMantu.address,
+        pricing: flowerBoardPricing,
+        account: groomBankAccount,
+      }),
+    });
+  }
 
   async function handleCopy(id: string, value: string) {
     try {
@@ -56,7 +82,7 @@ export function Registry() {
                     {copiedId === entry.id ? t.registry.copied : entry.ctaLabel}
                   </Button>
                 ) : (
-                  <Button variant="outline" href={entry.ctaHref} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" href={linkFor(entry)} target="_blank" rel="noopener noreferrer">
                     {entry.ctaLabel}
                   </Button>
                 )}

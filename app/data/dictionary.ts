@@ -13,6 +13,22 @@
 
 import type { Locale } from "@/app/_lib/i18n";
 
+/** 200000 -> "200.000". Grouped by hand so the text never depends on ICU data. */
+function groupDigits(value: number, separator: string): string {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+}
+
+/** Everything the flower-board order message states back to the guest. */
+type FlowerOrder = {
+  names: string;
+  eventLabel: string;
+  dateDisplay: string;
+  venueName: string;
+  address: string;
+  pricing: ReadonlyArray<{ boards: number; priceIDR: number }>;
+  account: { bank: string; holder: string; number: string };
+};
+
 const en = {
   meta: {
     description: (weddingDate: string) =>
@@ -110,6 +126,36 @@ const en = {
   registry: {
     heading: "Your blessing is the greatest gift. But should you wish to share a token of love —",
     copied: "Copied",
+    /**
+     * Waiting in the chat when the flower-board link opens. The blank lines are
+     * deliberate: everything only the sender knows is left for them to fill in,
+     * everything we know — address, price, account — is already stated, so the
+     * guest reads it in the compose box without having to ask first.
+     */
+    flowerMessage: ({
+      names,
+      eventLabel,
+      dateDisplay,
+      venueName,
+      address,
+      pricing,
+      account,
+    }: FlowerOrder) =>
+      `Hello, I would like to order a flower board for ${names}'s wedding.\n\n` +
+      `Event: ${eventLabel} — ${dateDisplay}\n` +
+      `Location: ${venueName}, ${address}\n\n` +
+      `Package (please delete the ones you are not taking):\n` +
+      pricing
+        .map(
+          ({ boards, priceIDR }) =>
+            `- ${boards} ${boards === 1 ? "board" : "boards"} — IDR ${groupDigits(priceIDR, ",")}`,
+        )
+        .join("\n") +
+      `\n\nSender's name:\n` +
+      `Message on the board:\n\n` +
+      `Payment to:\n` +
+      `${account.bank} · ${account.holder} · ${account.number}\n\n` +
+      `Please confirm the order and the delivery time. Thank you.`,
   },
 
   footer: {
@@ -226,6 +272,19 @@ const id: Dictionary = {
   registry: {
     heading: "Doa dan restu Anda adalah hadiah terindah. Namun bila berkenan berbagi tanda kasih —",
     copied: "Tersalin",
+    flowerMessage: ({ names, eventLabel, dateDisplay, venueName, address, pricing, account }) =>
+      `Halo, saya ingin memesan karangan bunga untuk pernikahan ${names}.\n\n` +
+      `Acara: ${eventLabel} — ${dateDisplay}\n` +
+      `Lokasi: ${venueName}, ${address}\n\n` +
+      `Pilihan paket (mohon hapus yang tidak dipilih):\n` +
+      pricing
+        .map(({ boards, priceIDR }) => `- ${boards} papan — Rp${groupDigits(priceIDR, ".")}`)
+        .join("\n") +
+      `\n\nNama pengirim:\n` +
+      `Ucapan pada papan bunga:\n\n` +
+      `Pembayaran ke:\n` +
+      `${account.bank} · ${account.holder} · ${account.number}\n\n` +
+      `Mohon dibantu konfirmasi pemesanan dan waktu pengirimannya. Terima kasih.`,
   },
 
   footer: {

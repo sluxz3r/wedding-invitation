@@ -85,11 +85,42 @@ const ngunduhMantuSchedule = {
   mapUrl: "https://maps.app.goo.gl/8UFW4fJ6Dg77Zgsz7",
 };
 
-/** Where a gift can actually go — untranslatable by nature. */
+/**
+ * Who a guest reaches to arrange a flower board (karangan bunga) — 0851-2131-5801
+ * written the way wa.me needs it: country code first, no leading "+".
+ */
+export const flowerOrderWhatsApp = "6285121315801";
+
+/**
+ * What a flower board costs, in rupiah. Quoted back to the guest in the order
+ * message so nobody has to ask; each language formats the amount its own way.
+ */
+export const flowerBoardPricing = [
+  { boards: 1, priceIDR: 200_000 },
+  { boards: 2, priceIDR: 350_000 },
+] as const;
+
+/**
+ * The groom's account. It settles flower-board orders as well as sitting in the
+ * gift list, so it is spelled out here once rather than parsed back out of the
+ * translated prose below.
+ */
+export const groomBankAccount = {
+  bank: "Bank Mandiri",
+  holder: couple.partnerOneFull,
+  number: "1370016771939",
+};
+
+/**
+ * Where a gift can actually go — untranslatable by nature. The "whatsapp" entry
+ * holds a phone number rather than a URL; the link is composed at render time,
+ * because the message it carries is written per language.
+ */
 const registryTargets = [
   { id: "bank-bride", kind: "bank", ctaHref: "1830005507735" },
-  { id: "bank-groom", kind: "bank", ctaHref: "1370016771939" },
+  { id: "bank-groom", kind: "bank", ctaHref: groomBankAccount.number },
   { id: "sociabuzz", kind: "link", ctaHref: "https://sociabuzz.com/arieandlily" },
+  { id: "flowers", kind: "whatsapp", ctaHref: flowerOrderWhatsApp },
 ] as const;
 
 type EventStrings = {
@@ -118,7 +149,7 @@ type RegistryStrings = {
 
 export type RegistryEntry = RegistryStrings & {
   id: string;
-  kind: "bank" | "wishlist" | "link";
+  kind: "bank" | "wishlist" | "link" | "whatsapp";
   ctaHref: string;
 };
 
@@ -184,6 +215,12 @@ const id: ContentStrings = {
         "Bagi sahabat kami yang berada di luar negeri — bila berkenan mengirimkan tanda kasih, SociaBuzz memudahkannya dengan kartu dan metode pembayaran internasional. Terima kasih atas kebaikan Anda.",
       ctaLabel: "Kirim hadiah lewat SociaBuzz",
     },
+    {
+      title: "Karangan Bunga",
+      detail:
+        "Bila berkenan mengirimkan karangan bunga, papan bunga dapat kami terima di acara Ngunduh Mantu di Binjai. Hubungi kami lewat WhatsApp — pesannya sudah kami siapkan, tinggal dilengkapi.",
+      ctaLabel: "Pesan lewat WhatsApp",
+    },
   ],
   rsvpDeadlineDisplay: "25 Juli 2026",
 };
@@ -238,6 +275,12 @@ const en: ContentStrings = {
       detail:
         "For our dear friends overseas — should you wish to send a token of love, SociaBuzz makes it effortless with international cards and payment methods. Thank you for your kindness.",
       ctaLabel: "Send a gift via SociaBuzz",
+    },
+    {
+      title: "Flower Boards",
+      detail:
+        "Should you wish to send a flower board, we can receive it at the Ngunduh Mantu celebration in Binjai. Reach us on WhatsApp — the message is already written, you need only fill in the blanks.",
+      ctaLabel: "Order via WhatsApp",
     },
   ],
   rsvpDeadlineDisplay: "25 July 2026",
