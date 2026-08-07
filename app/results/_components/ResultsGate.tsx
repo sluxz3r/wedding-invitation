@@ -28,7 +28,8 @@ const copy = {
     // These two mean the password was accepted — only the reading of the
     // wishes afterwards failed. Worth saying so, since the couple are the only
     // people who ever see them and they are the ones who can fix it.
-    unconfigured: "Kata sandi benar. SUPABASE_SERVICE_ROLE_KEY belum diisi, jadi ucapan belum bisa dimuat.",
+    unconfigured:
+      "Kata sandi benar. SUPABASE_SECRET_KEY belum diisi, jadi ucapan belum bisa dimuat.",
     load_failed:
       "Kata sandi benar, tetapi ucapan gagal dimuat. Periksa apakah project Supabase sedang di-pause.",
     rate_limited: "Terlalu banyak percobaan. Mohon tunggu sekitar 10 menit.",

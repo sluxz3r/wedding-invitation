@@ -9,16 +9,20 @@ const requestSchema = z.object({
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 /**
- * The service role key, which bypasses row-level security.
+ * Supabase's secret key (`sb_secret_…`), which bypasses row-level security.
  *
  * `wishes` has RLS enabled and no select policy at all (see the migration), so
  * the publishable key genuinely cannot read it — that is the design, not an
  * oversight, and it is why this route needs the stronger key.
  *
- * It must never gain a NEXT_PUBLIC_ prefix: that would inline a key with full
- * database access into the client bundle.
+ * SUPABASE_SERVICE_ROLE_KEY is accepted too: that is what the same key is
+ * called on projects still using the legacy JWT keys, and what much of the
+ * documentation still says.
+ *
+ * Neither name may ever gain a NEXT_PUBLIC_ prefix — that would inline a key
+ * with full database access into the client bundle.
  */
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SECRET_KEY = process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 /**
  * The gate on /results. Checked here rather than in the browser, so the wishes
@@ -110,8 +114,8 @@ export async function POST(request: Request) {
   failures.delete(key);
 
   // Past the gate: the wishes themselves still have to come from Supabase.
-  if (!SUPABASE_URL || !SERVICE_KEY) {
-    console.error("[results] SUPABASE_SERVICE_ROLE_KEY is not configured.");
+  if (!SUPABASE_URL || !SECRET_KEY) {
+    console.error("[results] SUPABASE_SECRET_KEY is not configured.");
     return failure("unconfigured", 500);
   }
 
@@ -121,8 +125,8 @@ export async function POST(request: Request) {
     `${SUPABASE_URL}/rest/v1/wishes?select=id,name,message,created_at&order=created_at.desc`,
     {
       headers: {
-        apikey: SERVICE_KEY,
-        Authorization: `Bearer ${SERVICE_KEY}`,
+        apikey: SECRET_KEY,
+        Authorization: `Bearer ${SECRET_KEY}`,
       },
       cache: "no-store",
     },
