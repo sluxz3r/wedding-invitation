@@ -77,6 +77,8 @@ const en = {
 
   events: {
     heading: "Two ceremonies, one blessed day.",
+    /** Marks a card whose event is already behind us. */
+    concluded: "Already Concluded",
     addToCalendar: "Add to Calendar",
     viewOnMaps: "View Location on Google Maps",
     calendarTitle: (names: string) => `Ceremony & Reception — ${names}`,
@@ -93,13 +95,14 @@ const en = {
 
   countdown: {
     eyebrow: "Countdown",
+    /** Names the event the clock is running to, so the figures aren't orphaned. */
+    towards: (label: string) => `Counting down to the ${label}`,
     days: "Days",
     hours: "Hours",
     minutes: "Minutes",
     seconds: "Seconds",
     announceArrived: "The day we've waited for is here.",
-    announceRemaining: (days: number, hours: number) =>
-      `${days} days and ${hours} hours to go.`,
+    announceRemaining: (days: number, hours: number) => `${days} days and ${hours} hours to go.`,
   },
 
   ucapan: {
@@ -225,6 +228,7 @@ const id: Dictionary = {
 
   events: {
     heading: "Dua acara, satu hari yang penuh berkah.",
+    concluded: "Telah Usai",
     addToCalendar: "Tambahkan ke Kalender",
     viewOnMaps: "Lihat Lokasi di Google Maps",
     calendarTitle: (names) => `Akad Nikah & Resepsi — ${names}`,
@@ -240,6 +244,7 @@ const id: Dictionary = {
 
   countdown: {
     eyebrow: "Hitung Mundur",
+    towards: (label) => `Menuju ${label}`,
     days: "Hari",
     hours: "Jam",
     minutes: "Menit",

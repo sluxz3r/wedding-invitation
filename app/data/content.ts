@@ -86,6 +86,25 @@ const ngunduhMantuSchedule = {
 };
 
 /**
+ * What the clock counts down to. The akad and the reception are behind us, so
+ * the countdown now runs to the ngunduh mantu — the one gathering still ahead.
+ * Point it back at `weddingDateISO` only if the schedule itself changes.
+ */
+export const countdownTargetISO = ngunduhMantuSchedule.dateTimeISO;
+
+/**
+ * Whether an event is already behind us. Read from the schedule rather than a
+ * hand-flipped flag, so the "already concluded" mark appears by itself once the
+ * event ends and never has to be edited back out.
+ *
+ * `now` is passed in rather than read here: the page is prerendered, so callers
+ * resolve the clock after mount and keep the build-time answer out of the HTML.
+ */
+export function hasConcluded(endTimeISO: string, now: number): boolean {
+  return new Date(endTimeISO).getTime() <= now;
+}
+
+/**
  * Who a guest reaches to arrange a flower board (karangan bunga) — 0851-2131-5801
  * written the way wa.me needs it: country code first, no leading "+".
  */

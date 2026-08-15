@@ -6,7 +6,7 @@ import { SectionShell } from "@/app/_components/layout/SectionShell";
 import { CornerFrame } from "@/app/_components/ui/CornerFrame";
 import { handleSpotlightMove } from "@/app/_lib/spotlight";
 import { useLanguage } from "@/app/_components/providers/LanguageProvider";
-import { weddingDateISO } from "@/app/data/content";
+import { countdownTargetISO } from "@/app/data/content";
 
 type Remaining = { days: number; hours: number; minutes: number; seconds: number; done: boolean };
 
@@ -51,8 +51,9 @@ function FlipNumber({ value }: { value: string }) {
 }
 
 export function Countdown() {
-  const { t } = useLanguage();
-  const target = new Date(weddingDateISO).getTime();
+  const { t, content } = useLanguage();
+  const { ngunduhMantu } = content;
+  const target = new Date(countdownTargetISO).getTime();
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
   useEffect(() => {
@@ -85,6 +86,14 @@ export function Countdown() {
 
   return (
     <SectionShell id="countdown" index="03" eyebrow={t.countdown.eyebrow} alt>
+      {/* Names what the figures below are counting to — they belong to the
+          ngunduh mantu now that the ceremony day has passed. */}
+      <p className="mb-8 font-display text-2xl italic text-gold-light sm:text-3xl">
+        {t.countdown.towards(ngunduhMantu.label)}
+        <span className="mt-2 block font-mono-wide text-xs uppercase not-italic tracking-[0.2em] text-paper-dim">
+          {ngunduhMantu.dateDisplay} · {ngunduhMantu.time}
+        </span>
+      </p>
       <m.div
         aria-hidden="true"
         initial="hidden"
