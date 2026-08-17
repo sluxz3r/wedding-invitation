@@ -167,7 +167,7 @@ export function WelcomeOverlay() {
               variants={rise}
               className="font-mono-wide text-xs uppercase tracking-[0.3em] text-gold-light"
             >
-              {content.weddingDateDisplay}
+              {content.headline.dateDisplay}
             </m.p>
 
             {/* CTA */}

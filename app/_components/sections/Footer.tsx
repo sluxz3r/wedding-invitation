@@ -40,7 +40,7 @@ export function Footer() {
         variants={fadeUp}
       >
         <Marquee
-          text={`${names} — ${content.weddingDateDisplay}`}
+          text={`${names} — ${content.headline.dateDisplay}`}
           className="mb-16 -mx-6 sm:-mx-10 lg:-mx-16"
         />
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 sm:flex-row sm:items-end">

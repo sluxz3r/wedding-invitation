@@ -19,7 +19,7 @@ const fadeUp = {
 
 export function EventDetails() {
   const { t, content } = useLanguage();
-  const { events } = content;
+  const { events, weddingDateDisplay } = content;
   const title = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
   const [akad, resepsi] = events;
 
@@ -45,6 +45,12 @@ export function EventDetails() {
       <RevealHeading className="max-w-2xl font-display text-4xl italic leading-tight sm:text-5xl">
         {t.events.heading}
       </RevealHeading>
+      {/* The cards below carry only a time, and the invitation now leads with
+          the ngunduh mantu — so the ceremony's own date is stated here, once,
+          for the two events that share it. */}
+      <p className="mt-6 font-mono-wide text-xs uppercase tracking-[0.25em] text-gold-light">
+        {weddingDateDisplay}
+      </p>
       <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2">
         {events.map((event, i) => {
           const concluded = now !== null && hasConcluded(event.endTimeISO, now);

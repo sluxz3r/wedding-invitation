@@ -8,7 +8,7 @@ import { getDictionary } from "@/app/data/dictionary";
 // A share card is rendered once and cached by whoever crawls it, so it speaks
 // the baseline language only — there is no reader to follow at that point.
 const t = getDictionary(baselineLocale);
-const { weddingDateDisplay } = getContent(baselineLocale);
+const { headline } = getContent(baselineLocale);
 
 export const alt = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
 export const size = { width: 1200, height: 630 };
@@ -98,7 +98,7 @@ export default async function Image() {
               color: "#a8a29b",
             }}
           >
-            {weddingDateDisplay}
+            {headline.dateDisplay}
           </span>
         </div>
       </div>

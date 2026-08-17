@@ -93,6 +93,25 @@ const ngunduhMantuSchedule = {
 export const countdownTargetISO = ngunduhMantuSchedule.dateTimeISO;
 
 /**
+ * Which event the invitation leads with — the welcome screen, the hero eyebrow,
+ * the footer marquee, the share card and the page description all name it. Same
+ * reasoning as `countdownTargetISO`: the ceremony and the reception are behind
+ * us, so what a guest arrives to should be the gathering still ahead. The
+ * ceremony's own date has not gone anywhere — it stays on the events section,
+ * where the cards it belongs to are marked as concluded.
+ *
+ * Derived rather than written out again, so the date is stated once per
+ * language; point it back at the ceremony by returning `weddingDateDisplay` and
+ * the first event's venue if the schedule itself changes.
+ */
+function headlineOf(strings: ContentStrings) {
+  return {
+    dateDisplay: strings.ngunduhMantu.dateDisplay,
+    venueName: strings.ngunduhMantu.venueName,
+  };
+}
+
+/**
  * Whether an event is already behind us. Read from the schedule rather than a
  * hand-flipped flag, so the "already concluded" mark appears by itself once the
  * event ends and never has to be edited back out.
@@ -308,7 +327,10 @@ const en: ContentStrings = {
 const contentStrings: Record<Locale, ContentStrings> = { id, en };
 
 export type WeddingContent = {
+  /** The ceremony's date. Shown on the events section; see `headline` below. */
   weddingDateDisplay: string;
+  /** What the invitation leads with — the next gathering, not the ceremony. */
+  headline: { dateDisplay: string; venueName: string };
   parents: { groom: string; bride: string };
   musicTitle: string;
   events: EventDetail[];
@@ -328,6 +350,7 @@ export function getContent(locale: Locale): WeddingContent {
 
   return {
     weddingDateDisplay: strings.weddingDateDisplay,
+    headline: headlineOf(strings),
     parents: strings.parents,
     musicTitle: strings.musicTitle,
     events: eventSchedule.map((schedule, i) => ({ ...schedule, ...strings.events[i] })),

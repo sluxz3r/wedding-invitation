@@ -31,8 +31,10 @@ type FlowerOrder = {
 
 const en = {
   meta: {
-    description: (weddingDate: string) =>
-      `With gratitude, we invite you to celebrate our wedding — ${weddingDate}.`,
+    // The date passed in is the next gathering ahead, not the ceremony (see
+    // `headline` in data/content.ts), so the sentence stays event-agnostic.
+    description: (eventDate: string) =>
+      `With gratitude, we invite you to celebrate with us — ${eventDate}.`,
   },
 
   welcome: {
@@ -184,8 +186,8 @@ export type Dictionary = typeof en;
 
 const id: Dictionary = {
   meta: {
-    description: (weddingDate) =>
-      `Dengan penuh rasa syukur, kami mengundang Anda untuk merayakan hari pernikahan kami — ${weddingDate}.`,
+    description: (eventDate) =>
+      `Dengan penuh rasa syukur, kami mengundang Anda untuk merayakan bersama kami — ${eventDate}.`,
   },
 
   welcome: {

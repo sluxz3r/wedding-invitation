@@ -42,8 +42,7 @@ function KineticWord({ word }: { word: string }) {
 
 export function Hero() {
   const { t, content } = useLanguage();
-  const { parents, weddingDateDisplay } = content;
-  const akad = content.events[0];
+  const { parents, headline } = content;
   const { isOpen } = useInvitationOverlay();
 
   return (
@@ -52,7 +51,7 @@ export function Hero() {
     <section className="relative flex min-h-dvh flex-col justify-between overflow-hidden border-b border-gold/15 bg-ink px-6 pb-10 pt-[calc(env(safe-area-inset-top)+7rem)] text-paper sm:px-10 lg:px-16">
       <div className="flex flex-1 flex-col justify-center">
         <EyebrowLabel index="00" className="mb-6">
-          {weddingDateDisplay} — {akad.venueName}
+          {headline.dateDisplay} — {headline.venueName}
         </EyebrowLabel>
 
         <m.h1

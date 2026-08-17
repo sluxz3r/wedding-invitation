@@ -34,7 +34,7 @@ const spaceMono = Space_Mono({
 // guest's browser — and their toggle — from hydration onwards.
 const title = `${couple.partnerOneFull} & ${couple.partnerTwoFull}`;
 const description = getDictionary(baselineLocale).meta.description(
-  getContent(baselineLocale).weddingDateDisplay,
+  getContent(baselineLocale).headline.dateDisplay,
 );
 
 export const metadata: Metadata = {
